@@ -4,13 +4,9 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
-import static org.antlr.v4.runtime.CharStreams.fromFileName;
 
 public class Launch {
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) {
         try{
 
             String filename = "test.txt";

@@ -50,7 +50,7 @@ public class banglangLaunch extends banglangBaseVisitor<Object> {
         var left = visit(context.expression(0));
         var right = visit(context.expression(1));
         
-        var op = context.MULTIPLE_OP().getText();
+        var op = context.multipleOperation().getText();
         switch (op) {
             case "*":
                 return Mul(left, right);
@@ -102,7 +102,31 @@ public class banglangLaunch extends banglangBaseVisitor<Object> {
     }
 
     private Object Mul(Object left, Object right) {
-        return null;
+        if (left instanceof Integer && right instanceof Integer) {
+            int l = (int) left;
+            int r = (int) right;
+            return l * r;
+        }
+
+        if (left instanceof Float && right instanceof Float) {
+            float l = (float) left;
+            float r = (float) right;
+            return l * r;
+        }
+
+        if (left instanceof Integer && right instanceof Float) {
+            int l = (int) left;
+            float r = (float) right;
+            return l * r;
+        }
+
+        if (left instanceof Float && right instanceof Integer) {
+            float l = (float) left;
+            int r = (int) right;
+            return l * r;
+        }
+
+        throw new IllegalArgumentException("Unsupported operand types: " + left.getClass().getSimpleName() + " and " + right.getClass().getSimpleName());
     }
 
     @Override
@@ -110,7 +134,7 @@ public class banglangLaunch extends banglangBaseVisitor<Object> {
         var left = visit(context.expression(0));
         var right = visit(context.expression(1));
 
-        var op = context.ADD_OP().getText();
+        var op = context.addOperation().getText();
         switch (op) {
             case "+":
                 return Add(left, right);
@@ -122,7 +146,31 @@ public class banglangLaunch extends banglangBaseVisitor<Object> {
     }
 
     private Object Subtract(Object left, Object right) {
-        return null;
+        if (left instanceof Integer && right instanceof Integer) {
+            int l = (int) left;
+            int r = (int) right;
+            return l - r;
+        }
+
+        if (left instanceof Float && right instanceof Float) {
+            float l = (float) left;
+            float r = (float) right;
+            return l - r;
+        }
+
+        if (left instanceof Integer && right instanceof Float) {
+            int l = (int) left;
+            float r = (float) right;
+            return l - r;
+        }
+
+        if (left instanceof Float && right instanceof Integer) {
+            float l = (float) left;
+            int r = (int) right;
+            return l - r;
+        }
+
+        throw new IllegalArgumentException("Unsupported operand types: " + left.getClass().getSimpleName() + " and " + right.getClass().getSimpleName());
     }
 
     private Object Add(Object left, Object right) {
@@ -160,5 +208,91 @@ public class banglangLaunch extends banglangBaseVisitor<Object> {
         }
 
         throw new IllegalArgumentException("Unsupported operand types: " + left.getClass().getSimpleName() + " and " + right.getClass().getSimpleName());
+    }
+
+    @Override
+    public Object visitConditionExpression(banglangParser.ConditionExpressionContext context) {
+        var left = visit(context.expression(0));
+        var right = visit(context.expression(1));
+
+        var op = context.conditionOperation().getText();
+        switch (op) {
+            case "<":
+                return less(left, right);
+            case ">":
+                return greater(left, right);
+            case "<=":
+                return lessEqual(left,right);
+            case ">=":
+                return greEqual(left,right);
+            case "==":
+                return isEqual(left,right);
+            case "!=":
+                return isNotEqual(left,right);
+            default:
+                throw new IllegalArgumentException("Unsupported operator: " + op);
+        }
+    }
+
+    private Object isNotEqual(Object left, Object right) {
+        return null;
+    }
+
+    private Object isEqual(Object left, Object right) {
+        return null;
+    }
+
+    private Object greEqual(Object left, Object right) {
+        return null;
+    }
+
+    private Object lessEqual(Object left, Object right) {
+        return null;
+    }
+
+    private Object greater(Object left, Object right) {
+        if (left instanceof Integer && right instanceof Integer) {
+            return (int) left > (int) right;
+        }
+
+        if (left instanceof Float && right instanceof Float) {
+            return (float) left > (float) right;
+        }
+
+        if (left instanceof Integer && right instanceof Float) {
+            return (int) left > (float) right;
+        }
+
+        if (left instanceof Float && right instanceof Integer) {
+            return (float) left > (int) right;
+        }
+
+        throw new IllegalArgumentException("Unsupported operand types: " + left.getClass().getSimpleName() + " and " + right.getClass().getSimpleName());
+    }
+
+
+    private Object less(Object left, Object right) {
+        if (left instanceof Integer && right instanceof Integer) {
+            return (int) left < (int) right;
+        }
+
+        if (left instanceof Float && right instanceof Float) {
+            return (float) left < (float) right;
+        }
+
+        if (left instanceof Integer && right instanceof Float) {
+            return (int) left < (float) right;
+        }
+
+        if (left instanceof Float && right instanceof Integer) {
+            return (float) left < (int) right;
+        }
+
+        throw new IllegalArgumentException("Unsupported operand types: " + left.getClass().getSimpleName() + " and " + right.getClass().getSimpleName());
+    }
+
+    @Override
+    public Object visitWhileLoop(banglangParser.WhileLoopContext content) {
+        return null;
     }
 }

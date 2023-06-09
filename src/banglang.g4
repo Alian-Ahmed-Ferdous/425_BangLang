@@ -21,10 +21,10 @@ dataType : INT
 expression : constant #constantExpression
            | ID #indentiferExpression
            | '(' expression ')' #bracketExpression
-           | expression MULTIPLE_OP expression #multipleExpression
-           | expression ADD_OP expression #addExpression
-           | expression CONDITION_OP expression #conditionExpression
-           | expression BOOLEAN_OP expression #booleanExpression
+           | expression multipleOperation expression #multipleExpression
+           | expression addOperation expression #addExpression
+           | expression conditionOperation expression #conditionExpression
+           | expression booleanOperation expression #booleanExpression
            ;
 
 constant: INT_LITERAL | FLOAT_LITERAL | BOOL_LITERAL | STRING_LITERAL | NULL;
