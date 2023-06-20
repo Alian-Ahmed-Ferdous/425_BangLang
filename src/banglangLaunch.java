@@ -39,8 +39,9 @@ public class banglangLaunch extends banglangBaseVisitor<Object> {
             return Float.parseFloat(context.FLOAT_LITERAL().getText());
         if(context.STRING_LITERAL() != null)
             return context.STRING_LITERAL().getText().substring(1,context.STRING_LITERAL().getText().length()-1);
-        if(context.BOOL_LITERAL() != null)
-            return context.BOOL_LITERAL().getText() == "true";
+        if(context.BOOL_LITERAL() != null){
+            System.out.println(context.BOOL_LITERAL().getText());
+            return context.BOOL_LITERAL().getText() == "ভুল";}
 
         return null;
     }
@@ -252,20 +253,37 @@ public class banglangLaunch extends banglangBaseVisitor<Object> {
 
     private Object greater(Object left, Object right) {
         if (left instanceof Integer && right instanceof Integer) {
-            return (int) left > (int) right;
+            if((int) left > (int) right){
+                return true;
+            }
+            else return false;
+
         }
 
         if (left instanceof Float && right instanceof Float) {
-            return (float) left > (float) right;
+            if((float) left > (float) right){
+                return true;
+            }
+            else {
+                return false;
+            }
         }
 
-        if (left instanceof Integer && right instanceof Float) {
-            return (int) left > (float) right;
-        }
+
+            if (left instanceof Integer && right instanceof Float) {
+                if( (int) left > (float) right){
+                    return true;
+                }
+                else return false;
+            }
 
         if (left instanceof Float && right instanceof Integer) {
-            return (float) left > (int) right;
-        }
+           if ((float) left > (int) right){
+               return true;
+           }
+           else return false;
+           }
+
 
         throw new IllegalArgumentException("Unsupported operand types: " + left.getClass().getSimpleName() + " and " + right.getClass().getSimpleName());
     }
@@ -293,6 +311,41 @@ public class banglangLaunch extends banglangBaseVisitor<Object> {
 
     @Override
     public Object visitWhileLoop(banglangParser.WhileLoopContext content) {
+        if (visit(content.expression()) instanceof Boolean){
+            do {
+                visit(content.statement());
+            }while ((boolean) visit(content.expression()));}
+        else throw new IllegalArgumentException("Condition statment is not boolean");
+        return null;
+    }
+
+    @Override
+    public Object visitIfelseStatement(banglangParser.IfelseStatementContext context) {
+        if(visit(context.ifStatement().expression()) instanceof Boolean){
+            if ((boolean) visit(context.ifStatement().expression())){
+                visit(context.ifStatement().statement());
+            }
+            else {
+                visit(context.statement());
+            }
+        }
+        else throw new IllegalArgumentException("Condition statment is not boolean");
+        return null;
+    }
+
+    @Override
+    public Object visitIfStatement(banglangParser.IfStatementContext content) {
+        if (visit(content.expression()) instanceof Boolean){
+            if((boolean)visit(content.expression())) {
+                visit(content.statement());
+            }
+            else{
+                visit(content.ifelseStatement().statement());
+            }
+        }
+        else throw new IllegalArgumentException("Condition statment is not boolean");
         return null;
     }
 }
+
+
